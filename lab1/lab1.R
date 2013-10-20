@@ -23,7 +23,8 @@ ci
 
 ### Problem 2
 "Problem 2"
-samidx = replicate(100, sample(1:fs, 400))
+ss = 400
+samidx = replicate(100, sample(1:fs, ss))
 
 # a) For each sample, find the average family income.
 "a)"
@@ -49,7 +50,8 @@ plot(x, y, type="l", lwd=1)
 
 # d) Plot the empirical CDF (see section 10.2). On this plot, superimpose the normal cumulative distribution function with mean and sd as dened in (c). Comment on the t.
 "d)"
-# TODO(wonjohn): do this.
+cdf = pnorm(x, mean=aai, sd=sai)
+plot(cdf, type="l", lwd=1)
 
 # e) Another way of examining a normal approximation is via normal probability plots (section 9.9). Make such a plot, and comment on what it shows about the approximation.
 "e)"
@@ -57,11 +59,28 @@ plot(x, y, type="l", lwd=1)
 
 # f)
 "f)"
-# For each of the 100 samples, find a 95% condence interval for the population average income.
-ai = apply(samidx, 2, function(idx) mean(fam$INCOME[idx]))
-sapply(a
-ci = c(p - 1.965 * se, p + 1.965 *se)
+# For each of the 100 samples, find a 95% confidence interval for the population average income.
+se = function(idx) sqrt(var(fam$INCOME[idx]) / ss * (1 - ss/fs))
+# start values of 95% confidence interval
+ci_start = apply(samidx, 2, function(idx) { mean(fam$INCOME[idx]) - 1.965 * se(idx) })
+# end values of 95% confidence interval
+ci_end = apply(samidx, 2, function(idx) { mean(fam$INCOME[idx]) + 1.965 * se(idx) })
 
 # How many of the intervals actually contain the population target?
+sum(ci_start <= mean(fam$INCOME) & mean(fam$INCOME) <= ci_end)
+
+### Problem 3
+"Problem 3"
+sam = fam[sample(1:fs, 500),]
+summary(sam[sam$TYPE == 1,]$INCOME)
+summary(sam[sam$TYPE == 2,]$INCOME)
+summary(sam[sam$TYPE == 3,]$INCOME)
+
+### Problem 4
+"Problem 4"
+# a)
+"a)"
 
 
+# b)
+"b)"
