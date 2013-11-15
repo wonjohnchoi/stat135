@@ -1,0 +1,22 @@
+Wonjohn Choi
+SID: 23123143
+GSI: Nanyu
+Lab 2
+a. What is the maximum likelihood estimate of for a sample from a Rayleigh distribution?
+Let the sample be r.
+Then, f(r|theta) = r/theta^2 exp(-r^2/(2 theta^2))
+log f(r|theta) = log(r) - 2 log(theta) - r^2/(2 theta^2)
+The first derivative of log f(r|theta) with respective to theta is -2/theta + r^2/theta^3.
+Setting it equal to zero gives us  theta = r/sqrt(2) or -r/sqrt(2), which is the maximum or minimum.
+The second derivative of log f(r|theta) with respective to theta is 2/theta^2 -3 r^2/theta^4.
+At theta = r/sqrt(2), the second derivative is 4/r^2 - 48/r^2 = -44/r^2 < 0.
+At theta = -r/sqrt(2), the second derivative is 4/r^2 - 48/r^2 = -44/r^2 < 0.
+Hence, theta = r/sqrt(2) and -r/sqrt(2) are the mle's of theta for a Rayleigh sample r.
+
+b. Let r1, ..., rn be the samples. Let mean(ri) denote the mean of r1, ..., rn.
+E(r) = theta * sqrt(PIE/2) by the property of Rayleight distribution
+theta = E(r) / sqrt(PIE/2)
+mom of theta = mean(ri) / sqrt(PIE/2) = mean(ri) * sqrt(2/PIE)
+For sample size of 1 (with sample r), mom of theta = r * sqrt(2/PIE)
+
+c. 
