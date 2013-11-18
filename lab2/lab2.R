@@ -6,7 +6,8 @@ medium=read.csv("medium.csv")
 
 ### c. What are the approximate variances of the mle and the method of moments estimate?
 # Since we just need to calculate an "approximate" variances, we simply generate a lot of samples of size 1 from Rayleigh distributions and use them to compute mle's and mom's and calculate their variances.
-# Generate a sample from Rayleigh distribution
-genSamRay = function() {
-  
+# Generate n samples from Rayleigh distribution (theta)
+genSamRay = function(theta, n) {
+  # Use method discussed in section
+  theta * sqrt(log(1/(1 - runif(n))^2))
 }

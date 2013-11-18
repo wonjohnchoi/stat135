@@ -19,4 +19,9 @@ theta = E(r) / sqrt(PIE/2)
 mom of theta = mean(ri) / sqrt(PIE/2) = mean(ri) * sqrt(2/PIE)
 For sample size of 1 (with sample r), mom of theta = r * sqrt(2/PIE)
 
-c. 
+c.
+var(mle of theta) = var(R)/(sqrt(2))^2 = var(R)/2 = (4-PIE)/2 * theta^2/2 = (4-PIE)/4 * theta^2 (here, R is Rayleigh distrubtion)
+var(mom of theta) = var(R) * (sqrt(2/PIE))^2 = var(R) * 2/PIE = (4-PIE)/2 * theta^2 * 2/PIE = (4-PIE)/PIE * theta^2 (here, R is Rayleigh distrubtion)
+
+
+d. log f(theta) = log(mean(rs)) - 2 log(theta) - mean(rs)^2/(2 theta^2)
