@@ -27,7 +27,7 @@ mle_y = sapply(points, lik(medium))
 plot(points, mle_y, type="l", main="plot of likelihood function for medium", ylab="Likelihood", xlab="THETA") # PLOT
 mle_plot = points[which(mle_y==max(mle_y))] # MLE FROM PLOT: 2.08
 mle_medium = sqrt(mean(medium^2)/2) # MLE FROM a): 2.076
-var_c= mean(medium^2)/(8*length(medium)) # APPROX. VARIANCE FROM c) # 0.00434
+var_mle_medium= mean(medium^2)/(8*length(medium)) # APPROX. VARIANCE FROM c) # 0.00434
 
 # For long,
 mle_y = sapply(points, lik(long))
@@ -96,12 +96,12 @@ genSamRay = function(theta, n) {
   theta * sqrt(log(1/(1 - runif(n))^2))
 }
 
-# We will do this for short.
+# We will do this for medium.
 B = 1000
-N = length(short)
-# genSamRay(mle_short, N): Get N samples from Rayleigh distribution with theta of mle_short
+N = length(medium)
+# genSamRay(mle_medium, N): Get N samples from Rayleigh distribution with theta of mle_medium
 # sqrt(mean( ^2)/2): Formula to compute MLE of theta that we found previously.
-sam_mles = replicate(B, sqrt(mean(genSamRay(mle_short, N)^2)/2))
+sam_mles = replicate(B, sqrt(mean(genSamRay(mle_medium, N)^2)/2))
 hist(sam_mles, freq=F)
 
 # Does the distribution appear roughly normal?
@@ -114,16 +114,16 @@ hist(sam_mles, freq=F)
 
 # Compare the standard deviation calculated from the bootstrap to the standard
 # errors you found previously
-# Previously, we got sqrt(0.00329)==0.0574 as the approximate standard error for short.
+# Previously, we got sqrt(0.00434)==0.0659 as the approximate standard error for medium.
 sd_mles = sd(sam_mles)*sqrt((length(sam_mles)-1)/length(sam_mles))
-# Here, I got 0.0583 as the standard deciation of mles from the bootstrap.
+# Here, I got 0.06635215 as the standard deciation of mles from the bootstrap.
 # Those values are very close.
 
 ### i
 sorted_mles = sort(sam_mles)
 # 95% confidence interval from bootstrap
-CL_bootstrap = c(sorted_mles[3], sorted_mles[997]) # 0.9582014 1.2879188
+CL_bootstrap = c(sorted_mles[3], sorted_mles[997]) # 1.873463 2.239622
 # 95% confidence interval from large sample theory
-CL_lst = c(mle_short - var_mle_short * 1.96, mle_short + var_mle_short * 19.6) # 1.110954 1.181794
+CL_lst = c(mle_medium - var_mle_medium * 1.96, mle_medium + var_mle_medium * 19.6) # 2.067468 2.161134
 # bootstrap confidence interval is very similar to the interval found by large sample theory.
 # But they differ by a bit: bootstrap confidence interval contains interval from large sample theory.
