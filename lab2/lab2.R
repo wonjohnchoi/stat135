@@ -3,6 +3,8 @@
 long=read.csv("long.csv")[[1]]
 short=read.csv("short.csv")[[1]]
 medium=read.csv("medium.csv")[[1]]
+### a, b, c: done on paper.
+
 ### d. We will plot the likelihood function
 # In a), we found that the likelihood function (theta) is
 lik = function(data) {
@@ -15,21 +17,21 @@ lik = function(data) {
 points = seq(0.1, 10, 0.01)
 # For short,
 mle_y = sapply(points, lik(short))
-plot(points, mle_y, type="l") # PLOT
+plot(points, mle_y, type="l", main="plot of likelihood function for short", ylab="Likelihood", xlab="THETA") # PLOT
 mle_plot = points[which(mle_y==max(mle_y))] # MLE FROM PLOT: 1.12
 mle_short = sqrt(mean(short^2)/2) # MLE FROM a): 1.117
-var_c= mean(short^2)/(8*length(short)) # APPROX. VARIANCE FROM c) # 0.00329
+var_mle_short= mean(short^2)/(8*length(short)) # APPROX. VARIANCE FROM c) # 0.00329
 
 # For medium,
 mle_y = sapply(points, lik(medium))
-plot(points, mle_y, type="l") # PLOT
+plot(points, mle_y, type="l", main="plot of likelihood function for medium", ylab="Likelihood", xlab="THETA") # PLOT
 mle_plot = points[which(mle_y==max(mle_y))] # MLE FROM PLOT: 2.08
 mle_medium = sqrt(mean(medium^2)/2) # MLE FROM a): 2.076
 var_c= mean(medium^2)/(8*length(medium)) # APPROX. VARIANCE FROM c) # 0.00434
 
 # For long,
 mle_y = sapply(points, lik(long))
-plot(points, mle_y, type="l") # PLOT
+plot(points, mle_y, type="l", main="plot of likelihood function for long", ylab="Likelihood", xlab="THETA") # PLOT
 mle_plot = points[which(mle_y==max(mle_y))] # MLE FROM PLOT: 3.32
 mle_long = sqrt(mean(long^2)/2) # MLE FROM a): 3.324
 var_c= mean(long^2)/(8*length(long)) # APPROX. VARIANCE FROM c) # 0.0211
@@ -95,7 +97,7 @@ genSamRay = function(theta, n) {
 }
 
 # We will do this for short.
-B = 100
+B = 1000
 N = length(short)
 # genSamRay(mle_short, N): Get N samples from Rayleigh distribution with theta of mle_short
 # sqrt(mean( ^2)/2): Formula to compute MLE of theta that we found previously.
@@ -107,11 +109,21 @@ hist(sam_mles, freq=F)
 
 # Do you think that the large sample theory can be reasonably applied here?
 # Yes, becaues histogram of mles of simulated rayleigh samples is roughly
-# normal. TODO(wonjohn): more here..
+# normal. The histogram gets more normal as I incease B.
+# Hence, mles of simulation are asymptotically normal.
 
 # Compare the standard deviation calculated from the bootstrap to the standard
-errors you found previously
+# errors you found previously
 # Previously, we got sqrt(0.00329)==0.0574 as the approximate standard error for short.
 sd_mles = sd(sam_mles)*sqrt((length(sam_mles)-1)/length(sam_mles))
 # Here, I got 0.0583 as the standard deciation of mles from the bootstrap.
 # Those values are very close.
+
+### i
+sorted_mles = sort(sam_mles)
+# 95% confidence interval from bootstrap
+CL_bootstrap = c(sorted_mles[3], sorted_mles[997]) # 0.9582014 1.2879188
+# 95% confidence interval from large sample theory
+CL_lst = c(mle_short - var_mle_short * 1.96, mle_short + var_mle_short * 19.6) # 1.110954 1.181794
+# bootstrap confidence interval is very similar to the interval found by large sample theory.
+# But they differ by a bit: bootstrap confidence interval contains interval from large sample theory.
