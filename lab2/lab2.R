@@ -97,6 +97,7 @@ genSamRay = function(theta, n) {
 }
 
 # We will do this for medium.
+# Question says it's suffice to use B = 100 but I use 1000 (this doesn't hurt).
 B = 1000
 N = length(medium)
 # genSamRay(mle_medium, N): Get N samples from Rayleigh distribution with theta of mle_medium
@@ -122,8 +123,7 @@ sd_mles = sd(sam_mles)*sqrt((length(sam_mles)-1)/length(sam_mles))
 ### i
 sorted_mles = sort(sam_mles)
 # 95% confidence interval from bootstrap
-CL_bootstrap = c(sorted_mles[3], sorted_mles[997]) # 1.873463 2.239622
+CL_bootstrap = c(sorted_mles[26], sorted_mles[975]) # 1.952830 2.196689
 # 95% confidence interval from large sample theory
-CL_lst = c(mle_medium - var_mle_medium * 1.96, mle_medium + var_mle_medium * 19.6) # 2.067468 2.161134
+CL_lst = c(mle_medium - sqrt(var_mle_medium) * 1.96, mle_medium + sqrt(var_mle_medium) * 1.96) # 1.946794 2.205171
 # bootstrap confidence interval is very similar to the interval found by large sample theory.
-# But they differ by a bit: bootstrap confidence interval contains interval from large sample theory.
