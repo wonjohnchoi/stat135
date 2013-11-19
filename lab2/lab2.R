@@ -17,35 +17,35 @@ points = seq(0.1, 10, 0.01)
 mle_y = sapply(points, lik(short))
 plot(points, mle_y, type="l") # PLOT
 mle_plot = points[which(mle_y==max(mle_y))] # MLE FROM PLOT: 1.12
-mle_short = sqrt(sum(short^2)/(2*length(short))) # MLE FROM a): 1.117
-var_c= (sum(short^2)/length(short)) /(8*length(short)) # APPROX. VARIANCE FROM c) # 0.00329
+mle_short = sqrt(mean(short^2)/2) # MLE FROM a): 1.117
+var_c= mean(short^2)/(8*length(short)) # APPROX. VARIANCE FROM c) # 0.00329
 
 # For medium,
 mle_y = sapply(points, lik(medium))
 plot(points, mle_y, type="l") # PLOT
 mle_plot = points[which(mle_y==max(mle_y))] # MLE FROM PLOT: 2.08
-mle_medium = sqrt(sum(medium^2)/(2*length(medium))) # MLE FROM a): 2.076
-var_c= (sum(medium^2)/length(medium)) /(8*length(medium)) # APPROX. VARIANCE FROM c): 0.00434
+mle_medium = sqrt(mean(medium^2)/2) # MLE FROM a): 2.076
+var_c= mean(medium^2)/(8*length(medium)) # APPROX. VARIANCE FROM c) # 0.00434
 
 # For long,
 mle_y = sapply(points, lik(long))
 plot(points, mle_y, type="l") # PLOT
 mle_plot = points[which(mle_y==max(mle_y))] # MLE FROM PLOT: 3.32
-mle_long = sqrt(sum(long^2)/(2*length(long))) # MLE FROM a): 3.324
-var_c= (sum(long^2)/length(long)) /(8*length(long)) # APPROX. VARIANCE FROM c): 0.0211
+mle_long = sqrt(mean(long^2)/2) # MLE FROM a): 3.324
+var_c= mean(long^2)/(8*length(long)) # APPROX. VARIANCE FROM c) # 0.0211
 
-### e TODO(wonjohn): fix something to be different from wonhee (for d too)
+### e
 # For short,
-mom_short = sqrt(2/pi)/length(short)*sum(short) # MOM FROM b): 1.1637
-var_short = (2/pi)*(4-pi)/(pi*length(short))*(sum(short)/length(short))^2 # APPROX. VARIANCE FROM c): 0.0039
+mom_short = sqrt(2/pi)*mean(short) # MOM FROM b): 1.1637
+var_short = 2*(4-pi)/(pi^2*length(short))*(mean(short))^2 # APPROX. VARIANCE FROM c): 0.0039
 
 # For medium,
-mom_medium = sqrt(2/pi)/length(medium)*sum(medium) # MOM FROM b): 2.069
-var_medium = (2/pi)*(4-pi)/(pi*length(medium))*(sum(medium)/length(medium))^2 # APPROX. VARIANCE FROM c): 0.00472
+mom_medium = sqrt(2/pi)*mean(medium) # MOM FROM b): 2.069
+var_medium = 2*(4-pi)/(pi^2*length(medium))*(mean(medium))^2 # APPROX. VARIANCE FROM c): 0.00472
 
 # For long,
-mom_long = sqrt(2/pi)/length(long)*sum(long) # MOM FROM b): 3.4124
-var_long = (2/pi)*(4-pi)/(pi*length(long))*(sum(long)/length(long))^2 # APPROX. VARIANCE FROM c): 0.02429
+mom_long = sqrt(2/pi)*mean(long) # MOM FROM b): 3.4124
+var_long = 2*(4-pi)/(pi^2*length(long))*(mean(long))^2 # APPROX. VARIANCE FROM c): 0.02429
 
 ### f
 # ralyeigh function which return a function that computes value of rayleigh(theta) for its input
@@ -63,7 +63,21 @@ y_mle = sapply(points, rayleigh(mle_short))
 lines(points, y_mom, col="red") # plot MOM
 lines(points, y_mle, col="blue") # plot MLE
 
-# TODO(wonjohn): medium, long, legend, main
+# For medium,
+hist(medium, freq=F) # Histogram FOR MEDIUM
+points = seq(0.1, 10, 0.01)
+y_mom = sapply(points, rayleigh(mom_medium))
+y_mle = sapply(points, rayleigh(mle_medium))
+lines(points, y_mom, col="red") # plot MOM
+lines(points, y_mle, col="blue") # plot MLE
+
+# For long,
+hist(long, freq=F) # Histogram FOR LONG
+points = seq(0.1, 10, 0.01)
+y_mom = sapply(points, rayleigh(mom_long))
+y_mle = sapply(points, rayleigh(mle_long))
+lines(points, y_mom, col="red") # plot MOM
+lines(points, y_mle, col="blue") # plot MLE
 
 ### g
 # There seems to be a relationship between my estimates
@@ -72,7 +86,32 @@ lines(points, y_mle, col="blue") # plot MLE
 # fit the histogram very well.
 
 ### h
+# Show that if X follows a Rayleigh distribution with...: this will be shown on paper.
+# Show how Proposition D of Section 2.3 of the text can be applied to accomplish this: this will be shown on paper.
+# Get sample from Rayleight distribtion (theta) of size n.
 genSamRay = function(theta, n) {
-  # Use method discussed in section
+  # Use method discussed in section (with Proposition D)
   theta * sqrt(log(1/(1 - runif(n))^2))
 }
+
+# We will do this for short.
+B = 100
+N = length(short)
+# genSamRay(mle_short, N): Get N samples from Rayleigh distribution with theta of mle_short
+# sqrt(mean( ^2)/2): Formula to compute MLE of theta that we found previously.
+sam_mles = replicate(B, sqrt(mean(genSamRay(mle_short, N)^2)/2))
+hist(sam_mles, freq=F)
+
+# Does the distribution appear roughly normal?
+# Yes, histogram looks approximately normal.
+
+# Do you think that the large sample theory can be reasonably applied here?
+# Yes, becaues histogram of mles of simulated rayleigh samples is roughly
+# normal. TODO(wonjohn): more here..
+
+# Compare the standard deviation calculated from the bootstrap to the standard
+errors you found previously
+# Previously, we got sqrt(0.00329)==0.0574 as the approximate standard error for short.
+sd_mles = sd(sam_mles)*sqrt((length(sam_mles)-1)/length(sam_mles))
+# Here, I got 0.0583 as the standard deciation of mles from the bootstrap.
+# Those values are very close.
