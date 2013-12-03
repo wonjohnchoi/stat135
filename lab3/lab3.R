@@ -32,3 +32,23 @@ plot(v, e, main="Residuals Versus Volume", xlab="Volume(kiloliters)", ylab="Resi
 # Try ﬁtting pressure as a quadratic function of volume. What do you think of
 the ﬁt?
 
+### 43
+cysts = read.table("cysts.txt", head=T)
+d = cysts$Diameter
+t10 = cysts$X10C
+n10 = cysts$n10
+t25 = cysts$X25C
+n25 = cysts$n25
+t28 = cysts$X28C
+n28 = cysts$n28
+# Does the time required appear to be a linear or a quadratic function of diameter? Can you ﬁnd a model that ﬁts?
+# plot...?
+
+# How do the settling rates at the three temperatures compare?
+
+
+### 44
+read.table("asthma.txt")
+hr = read.table("cystfibr.txt", head=T)
+h = hr$height
+r = hr$resistance
