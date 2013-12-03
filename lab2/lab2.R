@@ -58,28 +58,32 @@ rayleigh = function(theta) {
 }
 
 # For short,
-hist(short, freq=F) # Histogram FOR SHORT
+hist(short, freq=F, main="Histogram of Measurements For Short", xlab="Measurements") # Histogram FOR SHORT
 points = seq(0.1, 10, 0.01)
 y_mom = sapply(points, rayleigh(mom_short))
 y_mle = sapply(points, rayleigh(mle_short))
-lines(points, y_mom, col="red") # plot MOM
-lines(points, y_mle, col="blue") # plot MLE
+lines(points, y_mom, col="red", type="p", cex=.5) # plot MOM
+lines(points, y_mle, col="forest green", type="p", cex=.5) # plot MLE
+legend(x=2.1,y=.6, legend = c("MLE Fit", "MOM Fit"), fill=c("forest green","red"))
+
 
 # For medium,
-hist(medium, freq=F) # Histogram FOR MEDIUM
+hist(medium, freq=F, main="Histogram of Measurements For Medium", xlab="Measurements") # Histogram FOR MEDIUM
 points = seq(0.1, 10, 0.01)
 y_mom = sapply(points, rayleigh(mom_medium))
 y_mle = sapply(points, rayleigh(mle_medium))
-lines(points, y_mom, col="red") # plot MOM
-lines(points, y_mle, col="blue") # plot MLE
+lines(points, y_mom, col="red", type="p", cex=.5) # plot MOM
+lines(points, y_mle, col="forest green", type="p", cex=.5) # plot MLE
+legend(x=4,y=.3, legend = c("MLE Fit", "MOM Fit"), fill=c("forest green","red"))
 
 # For long,
-hist(long, freq=F) # Histogram FOR LONG
+hist(long, freq=F, main="Histogram of Measurements For Long", xlab="Measurements") # Histogram FOR LONG
 points = seq(0.1, 10, 0.01)
 y_mom = sapply(points, rayleigh(mom_long))
 y_mle = sapply(points, rayleigh(mle_long))
-lines(points, y_mom, col="red") # plot MOM
-lines(points, y_mle, col="blue") # plot MLE
+lines(points, y_mom, col="red", type="p", cex=.5) # plot MOM
+lines(points, y_mle, col="forest green", type="p", cex=.5) # plot MLE
+legend(x=8,y=.15, legend = c("MLE Fit", "MOM Fit"), fill=c("forest green","red"))
 
 ### g
 # There seems to be a relationship between my estimates
@@ -103,7 +107,7 @@ N = length(medium)
 # genSamRay(mle_medium, N): Get N samples from Rayleigh distribution with theta of mle_medium
 # sqrt(mean( ^2)/2): Formula to compute MLE of theta that we found previously.
 sam_mles = replicate(B, sqrt(mean(genSamRay(mle_medium, N)^2)/2))
-hist(sam_mles, freq=F)
+hist(sam_mles, freq=F, main="Histogram of Means of Bootstrap Samples Of Medium Data", xlab="Mean", ylab="Count")
 
 # Does the distribution appear roughly normal?
 # Yes, histogram looks approximately normal.

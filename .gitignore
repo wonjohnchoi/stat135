@@ -4,3 +4,6 @@ tmp/*
 Rplots.pdf
 BookData
 __MACOSX/
+*.RHistory
+*.RData
+

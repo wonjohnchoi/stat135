@@ -56,7 +56,7 @@ t.test(s0, n0, var.equal=F) # p-value = 0.03701
 t.test(s2, n2, var.equal=F) # p-value = 0.01275
 # This is rejected for alpha of 0.5. Hence, evidence of difference is strong.
 
-@ For difference,
+# For difference,
 t.test(sd, nd, var.equal=F) # p-value = 0.07919
 # This is not rejected for alpha of 0.5. Hence, evidence of difference is not strong.
 
@@ -126,6 +126,7 @@ su = read.table("vitaminc3.txt", header=T)[,2]
 cp = read.table("vitaminc3.txt", header=T)[,3]
 cu = read.table("vitaminc3.txt", header=T)[,4]
 
+### g
 # descriptive statistics
 summary(sp)
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -161,6 +162,6 @@ hist(cu, main="Histogram of Control Urine")
 
 ### i
 wilcox.test(sp, cp, exact=F, pairing=F) # p-value=1
-# This is rejected for alpha of 0.05, so evidence of difference is strong.
+# This is not rejected for alpha of 0.05, so evidence of difference is weak.
 wilcox.test(su, cu, exact=F, pairing=F) # p-value=0.00323
 # This is rejected for alpha of 0.05, so evidence of difference is strong.
