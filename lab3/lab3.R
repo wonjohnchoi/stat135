@@ -24,6 +24,7 @@ e = residuals(fit)
 
 # Residuals versus volume
 plot(v, e, main="Residuals (Linear Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
+abline(h=0)
 # The residual plot does not appear to be a horizontal line with y = 0, so linear mode does not fit very well.
 
 ### c
@@ -38,7 +39,11 @@ fit
 e = residuals(fit)
 # Residuals versus volume
 plot(v, e, main="Residuals (Quadratic Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
-# I think the fit is... 
+abline(h=0)
+
+plot(v, p, main="Pressure Versus Volume (Quadratic Fit)", xlab="Volume(kiloliters)", ylab="Pressure(pascals)")
+lines(v, fitted(fit))
+# The fitted line fits the plot very well.
 
 ### 43
 cysts = read.table("cysts.txt", head=T)
@@ -51,25 +56,76 @@ t28 = cysts$X28C
 n28 = cysts$n28
 # Does the time required appear to be a linear or a quadratic function of diameter? Can you find a model that fits?
 fit10linear = lm(t10~d)
-fit10linear
-# Coefficients:
-# (Intercept)            d  
-#       384.8        -16.3  
+plot(d, t10, main="Time(10) vs Diameter (With Linear Model Fit)", xlab="Diameter", ylab="Time")
+lines(d, fitted(fit10linear))
+plot(d, residuals(fit10linear), main="Residuals (Linear Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
+abline(h=0)
+summary(fit10linear)
+# F-statistic: 76.42 on 1 and 5 DF,  p-value: 0.0003245
 
-fit10quadratic = lm(t10~d + I(d^2))
-fit10quadratic
-# Coefficients:
-# (Intercept)            d       I(d^2)  
-#    776.379      -67.334        1.608
+fit10quadratic = lm(t10~I(d^2)+d)
+plot(d, t10, main="Time(10) vs Diameter (With Quadratic Model Fit)", xlab="Diameter", ylab="Time")
+lines(d, fitted(fit10quadratic))
+plot(d, residuals(fit10quadratic), main="Residuals (Quadratic Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
+abline(h=0)
+summary(fit10quadratic)
+# F-statistic: 781.6 on 2 and 4 DF,  p-value: 6.514e-06
+# For 10, quadratic fits better than linear. Also, p value for F-statistics is lower for quadratic fit.
 
+fit25linear = lm(t25~d)
+plot(d, t25, main="Time(25) vs Diameter (With Linear Model Fit)", xlab="Diameter", ylab="Time")
+lines(d, fitted(fit25linear))
+plot(d, residuals(fit25linear), main="Residuals (Linear Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
+abline(h=0)
+summary(fit25linear)
+# F-statistic: 72.93 on 1 and 5 DF,  p-value: 0.0003625 
 
+fit25quadratic = lm(t25~I(d^2)+d)
+plot(d, t25, main="Time(25) vs Diameter (With Quadratic Model Fit)", xlab="Diameter", ylab="Time")
+lines(d, fitted(fit25quadratic))
+plot(d, residuals(fit25quadratic), main="Residuals (Quadratic Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
+abline(h=0)
+summary(fit25quadratic)
+# F-statistic: 617.4 on 2 and 4 DF,  p-value: 1.043e-05 
+# For 25, quadratic fits better than linear. Also, p value for F-statistics is lower for quadratic fit.
 
+fit28linear = lm(t28~d)
+plot(d, t28, main="Time(28) vs Diameter (With Linear Model Fit)", xlab="Diameter", ylab="Time")
+lines(d, fitted(fit28linear))
+plot(d, residuals(fit28linear), main="Residuals (Linear Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
+abline(h=0)
+summary(fit28linear)
+# F-statistic: 105.7 on 1 and 5 DF,  p-value: 0.0001497 
 
+fit28quadratic = lm(t28~I(d^2)+d)
+plot(d, t28, main="Time(28) vs Diameter (With Quadratic Model Fit)", xlab="Diameter", ylab="Time")
+lines(d, fitted(fit28quadratic))
+plot(d, residuals(fit28quadratic), main="Residuals (Quadratic Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
+abline(h=0)
+summary(fit28quadratic)
+# F-statistic: 611.8 on 2 and 4 DF,  p-value: 1.062e-05 
+# For 28, quadratic fits better than linear. Also, F-statistics is lower for quadratic fit.
+
+# Since quadratic fit is better for all 10, 25, 28,  the time
+# required appears to be a quadratic function of diameter.
+
+# Find the model that fits: we found quadratic models that fit for 10, 25, 28 above.
+plot(d, t10, main="Time vs Diameter", xlab="Diameter", ylab="Time", col="red")
+points(d, t25, col="blue")
+points(d, t28, col="forest green")
 # How do the settling rates at the three temperatures compare?
-
+# From the grpah, it is clear that the settling rates is slowest with 10 and highest with green.
+# (settling rate is higher if the time needed to settle is lower)
 
 ### 44
-read.table("asthma.txt")
-hr = read.table("cystfibr.txt", head=T)
-h = hr$height
-r = hr$resistance
+ahr = read.table("asthma.txt", head=T)
+chr = read.table("cystfibr.txt", head=T)
+ah = ahr$height
+ar = ahr$resistance
+plot(ah, ar)
+cor(ahr, method="pearson")
+
+ch = chr$height
+cr = chr$resistance
+plot(ch, cr)
+cor(chr, method="pearson")
