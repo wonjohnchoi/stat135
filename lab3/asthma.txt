@@ -1,4 +1,4 @@
-'height"	"resistance"
+"height"	"resistance"
 90	25.6
 97	15.1
 97	9.8
