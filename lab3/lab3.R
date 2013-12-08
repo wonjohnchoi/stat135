@@ -8,13 +8,14 @@ p = vp$Pressure
 ### a
 # Plot pressure versus volume. Does the relationship appear linear?
 plot(v, p, main="Pressure Versus Volume", xlab="Volume(kiloliters)", ylab="Pressure(pascals)")
-# The relationship appears...
+# The relationship appears linear.
 
 ### b
 # Calculate the linear regression of pressure on volume, and plot the residuals
-versus volume. What does the residual plot show?
+# versus volume. What does the residual plot show?
 # Linear regression
 fit = lm(p~v)
+fit
 # B1 (slope): 2316.5
 # B0 (intercept): -257.3
 
@@ -23,13 +24,11 @@ e = residuals(fit)
 
 # Residuals versus volume
 plot(v, e, main="Residuals (Linear Fit) Versus Volume", xlab="Volume(kiloliters)", ylab="Residuals(pascals)")
-
-# The residual plot shows..
-
+# The residual plot does not appear to be a horizontal line with y = 0, so linear mode does not fit very well.
 
 ### c
 # Try fiting pressure as a quadratic function of volume. What do you think of
-the fit?
+# the fit?
 fit = lm(p~I(v^2)+v)
 fit
 # Coefficients:
